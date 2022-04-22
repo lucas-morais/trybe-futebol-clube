@@ -1,35 +1,32 @@
-import { DataTypes, Model } from 'sequelize';
+import { Model, DataTypes } from 'sequelize';
 import db from '.';
 // import OtherModel from './OtherModel';
 
-class User extends Model {
-  id: number;
+class Example extends Model {
+  public id: number;
 
-  username: string;
+  public homeTeam: number;
 
-  role: string;
+  public homeTeamGoals: number;
 
-  email: string;
+  public awayTeam: number;
 
-  password: string;
+  public awayTeamGoals: number;
+
+  public inProgress: number;
 }
 
-User.init({
+Example.init({
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  username: DataTypes.STRING,
-  role: DataTypes.STRING,
-  email: DataTypes.STRING,
-  password: DataTypes.STRING,
 }, {
   // ... Outras configs
-  tableName: 'teams',
   underscored: true,
   sequelize: db,
-  // modelName: 'example',
+  modelName: 'team',
   timestamps: false,
 });
 
@@ -44,4 +41,4 @@ User.init({
 // Example.hasMany(OtherModel, { foreignKey: 'campoC', as: 'campoEstrangeiroC' });
 // Example.hasMany(OtherModel, { foreignKey: 'campoD', as: 'campoEstrangeiroD' });
 
-export default User;
+export default Example;
