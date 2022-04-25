@@ -4,7 +4,7 @@ WORKDIR /api
 
 COPY . .
 
-COPY node_modules .
+RUN ["npm", "install"]
 
 EXPOSE 3001
 
