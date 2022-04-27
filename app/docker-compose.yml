@@ -3,6 +3,8 @@ services:
   frontend:
     build: ./frontend
     container_name: app_frontend
+    volumes:
+      - ./frontend/:/app
     ports:
       - 3000:3000
     depends_on:
