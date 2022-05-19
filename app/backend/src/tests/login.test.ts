@@ -52,7 +52,7 @@ describe('Consulta o endpoint "/login"', () => {
       expect(chaiHttpResponse).to.have.status(200);
     })
   });
-  describe('O login deve não deve funcionar com email inválido', () => {
+  describe('O login não deve funcionar com email inválido', () => {
     let chaiHttpResponse: Response;
     before(async () => {
       sinon.stub(User, 'findOne').resolves(null);
@@ -77,7 +77,7 @@ describe('Consulta o endpoint "/login"', () => {
       expect(chaiHttpResponse).to.have.status(401)
     })
   })
-  describe('O login deve não deve funcionar com a senha inválida', () => {
+  describe('O login não deve funcionar com a senha inválida', () => {
     let chaiHttpResponse: Response;
     before(async () => {
       sinon.stub(User, 'findOne').resolves(null);
