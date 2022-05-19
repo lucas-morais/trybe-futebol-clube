@@ -71,7 +71,7 @@ describe('Consulta o endpoint "/login"', () => {
     });
     it('o objeto retornado deve conter a mensagem: "Incorrect email or password"', () => {
       const { message } = chaiHttpResponse.body
-      expect(message.body).to.be.equals('Incorrect email or password');
+      expect(message).to.be.equals('Incorrect email or password');
     })
     it('deve responder com status "unauthorized - 401"', () => {
       expect(chaiHttpResponse).to.have.status(401)
@@ -90,13 +90,13 @@ describe('Consulta o endpoint "/login"', () => {
     after(() => {
       (User.findOne as sinon.SinonStub).restore();
     });
-    it('Deve retornar um objeto com a propriedade "mensage"', () => {
+    it('Deve retornar um objeto com a propriedade "message"', () => {
       expect(chaiHttpResponse.body).to.be.an('object');
       expect(chaiHttpResponse.body).to.have.property('message');
     });
     it('o objeto retornado deve conter a mensagem: "Incorrect email or password"', () => {
       const { message } = chaiHttpResponse.body
-      expect(message.body).to.be.equals('Incorrect email or password');
+      expect(message).to.be.equals('Incorrect email or password');
     })
     it('deve responder com status "unauthorized - 401"', () => {
       expect(chaiHttpResponse).to.have.status(401)

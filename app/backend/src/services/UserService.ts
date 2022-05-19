@@ -3,11 +3,11 @@ import { IUniqueUser, IUserResponse } from '../interfaces';
 import { UserModel } from '../models';
 
 export default class UserService {
-  public static async findByUnique(unique: IUniqueUser): Promise<User> {
+  public static async findByUnique(unique: IUniqueUser): Promise<User | null> {
     const user = await UserModel.findByUnique(unique);
-    if (!user) {
-      throw new Error('User not found');
-    }
+    // if (!user) {
+    //   throw new Error('User not found');
+    // }
     return user;
   }
 

@@ -10,8 +10,8 @@ export default class LoginService {
   public async login(data: ILogin): Promise<ILoginResponse> {
     const { email } = data;
     const user = await UserService.findByUnique({ email });
-    if (!LoginService.checkLogin(data, user.email, user.password)) {
-      throw new UnauthorizedError('Incorrect password or email');
+    if (!user || !LoginService.checkLogin(data, user.email, user.password)) {
+      throw new UnauthorizedError('Incorrect email or password');
     }
 
     const userResponse = UserService.serializer(user);
