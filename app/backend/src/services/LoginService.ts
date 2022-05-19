@@ -1,3 +1,4 @@
+import HashPassowrd from '../providers/HashPassowrd';
 import { UnauthorizedError } from '../errors';
 import { ILogin, ILoginResponse, IToken } from '../interfaces';
 import UserService from './UserService';
@@ -8,21 +9,22 @@ export default class LoginService {
   }
 
   public async login(data: ILogin): Promise<ILoginResponse> {
-    const { email } = data;
+    const { email, password } = data;
     const user = await UserService.findByUnique({ email });
-    if (!user || !LoginService.checkLogin(data, user.email, user.password)) {
+    if (!user || !await LoginService.checkLogin(password, user.password)) {
       throw new UnauthorizedError('Incorrect email or password');
     }
 
     const userResponse = UserService.serializer(user);
-    const token = await this.tokenJwt.createToken(userResponse);
+    const token = this.tokenJwt.createToken(userResponse);
     return {
       user: userResponse,
       token,
     };
   }
 
-  private static checkLogin(data:ILogin, email: string, password: string):boolean {
-    return (data.password === password) && (data.email === email);
+  private static async checkLogin(password: string, hashPassword: string): Promise<boolean> {
+    const passwordIsCorrect = await HashPassowrd.checkPassword(password, hashPassword);
+    return passwordIsCorrect;
   }
 }
