@@ -24,7 +24,7 @@ export default class LoginController {
   ): Response | void => {
     try {
       const { user } = req.body;
-      return res.status(200).send(user.role);
+      return res.status(200).json(user.role);
     } catch (err) {
       return next(err);
     }

@@ -184,7 +184,7 @@ describe('Acessa o endpoint de validação de login: "/login/validate"', () => {
         .set({authorization: token.token} )
     })
     it('deve retornar uma string contendo a "role" do usuário', () => {
-      expect(chaiHttpResponse.text).to.be.equals('user');
+      expect(chaiHttpResponse.body).to.be.equals('user');
     });
     it('deve retornar uma resposta com o status "Ok - 200"', () => {
       expect(chaiHttpResponse).to.have.status(200)
