@@ -26,7 +26,7 @@ User.init({
   password: DataTypes.STRING,
 }, {
   // ... Outras configs
-  tableName: 'teams',
+  tableName: 'users',
   underscored: true,
   sequelize: db,
   // modelName: 'example',
