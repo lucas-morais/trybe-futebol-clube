@@ -12,8 +12,21 @@ export default class LoginController {
       const { password, email }: ILogin = req.body;
       const loginResponse = await this.service.login({ email, password });
       return res.status(200).json(loginResponse);
-    } catch (e) {
-      return next(e);
+    } catch (err) {
+      return next(err);
+    }
+  };
+
+  public validate = (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Response | void => {
+    try {
+      const { user } = req.body;
+      return res.status(200).send(user.role);
+    } catch (err) {
+      return next(err);
     }
   };
 }

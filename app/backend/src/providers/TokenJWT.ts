@@ -1,29 +1,30 @@
-import { sign, SignOptions } from 'jsonwebtoken';
-import { IUserResponse } from '../interfaces/IUser';
-import { IToken } from '../interfaces';
+import { sign, SignOptions, verify } from 'jsonwebtoken';
+import { IToken, IUserResponse } from '../interfaces';
 import ReadFile from './ReadFile';
 
 export default class TokenJWT implements IToken {
   private static FILE = './jwt.evaluation.key';
 
-  private tokenSecret: Promise<string>;
+  private tokenSecret: string;
 
   private static OPTIONS:SignOptions = {
     algorithm: 'HS256',
     expiresIn: '14d',
   };
 
-  constructor() {
-    this.tokenSecret = ReadFile.read(TokenJWT.FILE);
+  public async init() {
+    this.tokenSecret = await ReadFile.read(TokenJWT.FILE);
   }
 
-  public async createToken(user: IUserResponse): Promise<string> {
-    const secret = await this.tokenSecret;
+  public createToken(user: IUserResponse): string {
+    const secret = this.tokenSecret;
     const token = sign(user, secret, TokenJWT.OPTIONS);
     return token;
   }
 
-  // public async validateToken(token: string): boolean {
-  //   throw new Error('Method not implemented.');
-  // }
+  public decode(token: string): IUserResponse {
+    const secret = this.tokenSecret;
+    const payload = verify(token, secret);
+    return payload as IUserResponse;
+  }
 }
