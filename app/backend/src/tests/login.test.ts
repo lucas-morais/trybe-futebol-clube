@@ -101,5 +101,43 @@ describe('Consulta o endpoint "/login"', () => {
     it('deve responder com status "unauthorized - 401"', () => {
       expect(chaiHttpResponse).to.have.status(401)
     })
-  })
+  });
+  describe('O login não deve funcionar se o email não for fornecido', () => {
+    let chaiHttpResponse: Response;
+    before(async () => {
+      chaiHttpResponse = await chai.request(app).post('/login').send({
+        password: "123456789",
+      });
+    });
+    it('Deve retornar um objeto com a propriedade "message"', () => {
+      expect(chaiHttpResponse.body).to.be.an('object');
+      expect(chaiHttpResponse.body).to.have.property('message');
+    });
+    it('o objeto retornado deve conter a mensagem: "All fields must be filled"', () => {
+      const { message } = chaiHttpResponse.body
+      expect(message).to.be.equals('All fields must be filled');
+    })
+    it('deve responder com status "bad request - 400"', () => {
+      expect(chaiHttpResponse).to.have.status(400)
+    })
+  });
+  describe('O login não deve funcionar se a senha não for fornecida', () => {
+    let chaiHttpResponse: Response;
+    before(async () => {
+      chaiHttpResponse = await chai.request(app).post('/login').send({
+        email: users[0].email,
+      });
+    });
+    it('Deve retornar um objeto com a propriedade "message"', () => {
+      expect(chaiHttpResponse.body).to.be.an('object');
+      expect(chaiHttpResponse.body).to.have.property('message');
+    });
+    it('o objeto retornado deve conter a mensagem: "All fields must be filled"', () => {
+      const { message } = chaiHttpResponse.body
+      expect(message).to.be.equals('All fields must be filled');
+    })
+    it('deve responder com status "bad request - 400"', () => {
+      expect(chaiHttpResponse).to.have.status(400)
+    })
+  });
 });
