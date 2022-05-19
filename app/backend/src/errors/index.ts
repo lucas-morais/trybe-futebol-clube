@@ -1,6 +1,7 @@
 import UnauthorizedError from './UnauthorizedError';
+import BadRequest from './BadRequest';
 
 export {
-  // eslint-disable-next-line import/prefer-default-export
   UnauthorizedError,
+  BadRequest,
 };

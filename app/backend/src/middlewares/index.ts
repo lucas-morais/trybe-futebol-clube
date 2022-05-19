@@ -1,6 +1,7 @@
 import ErrorMiddleware from './ErrorMiddleware';
+import LoginMiddleware from './LoginMiddleware';
 
 export {
-  // eslint-disable-next-line import/prefer-default-export
   ErrorMiddleware,
+  LoginMiddleware,
 };

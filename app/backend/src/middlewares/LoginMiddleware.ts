@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import BadRequest from '../errors/BadRequest';
+import { BadRequest } from '../errors';
 
 export default class LoginMiddleware {
   static validate = (req: Request, _res: Response, next: NextFunction): void => {
