@@ -1,12 +1,12 @@
 export default abstract class RequestError extends Error {
-  protected _STATUS: number;
+  protected _status: number;
 
   constructor(message: string) {
     super(message);
     this.name = 'RequestError';
   }
 
-  public get STATUS(): number {
-    return this._STATUS;
+  public get status(): number {
+    return this._status;
   }
 }
