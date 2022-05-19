@@ -65,7 +65,7 @@ describe('Consulta o endpoint "/login"', () => {
     after(() => {
       (User.findOne as sinon.SinonStub).restore();
     });
-    it('Deve retornar um objeto com a propriedade "mensage"', () => {
+    it('Deve retornar um objeto com a propriedade "message"', () => {
       expect(chaiHttpResponse.body).to.be.an('object');
       expect(chaiHttpResponse.body).to.have.property('message');
     });

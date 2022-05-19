@@ -1,3 +1,4 @@
+import { UnauthorizedError } from '../errors';
 import { ILogin, ILoginResponse, IToken } from '../interfaces';
 import UserService from './UserService';
 
@@ -10,7 +11,7 @@ export default class LoginService {
     const { email } = data;
     const user = await UserService.findByUnique({ email });
     if (!LoginService.checkLogin(data, user.email, user.password)) {
-      throw new Error('Incorrect password or email');
+      throw new UnauthorizedError('Incorrect password or email');
     }
 
     const userResponse = UserService.serializer(user);
