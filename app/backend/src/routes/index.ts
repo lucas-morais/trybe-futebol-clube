@@ -1,7 +1,7 @@
 import loginRouter from './LoginRouter';
+import teamRouter from './TeamRouter';
 
-const a = 0;
 export {
-  a,
   loginRouter,
+  teamRouter,
 };
