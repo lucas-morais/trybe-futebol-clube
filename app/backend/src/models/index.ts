@@ -1,7 +1,7 @@
 import UserModel from './UserModel';
+import TeamModel from './TeamModel';
 
-const a = 0;
 export {
   UserModel,
-  a,
+  TeamModel,
 };
