@@ -14,6 +14,7 @@ Team.init({
     primaryKey: true,
     autoIncrement: true,
   },
+  teamName: DataTypes.STRING,
 }, {
   // ... Outras configs
   underscored: true,
@@ -31,7 +32,7 @@ Team.init({
 // OtherModel.belongsTo(Team, { foreignKey: 'campoB', as: 'campoEstrangeiroB' });
 
 Team.hasMany(Match, { foreignKey: 'id', as: 'matchs' });
-Match.belongsTo(Team, { foreignKey: 'home_team', as: 'home_team' });
+Match.belongsTo(Team, { foreignKey: 'home_team', as: 'home' });
 Match.belongsTo(Team, { foreignKey: 'away_team', as: 'away' });
 // Team.hasMany(OtherModel, { foreignKey: 'campoD', as: 'campoEstrangeiroD' });
 

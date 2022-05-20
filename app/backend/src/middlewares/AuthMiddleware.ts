@@ -15,7 +15,6 @@ export default class AuthMiddleware {
         req.body = { ...req.body, user: payload };
         return next();
       } catch (error) {
-        console.log('aqui');
         throw new UnauthorizedError('Invalid token');
       }
     }

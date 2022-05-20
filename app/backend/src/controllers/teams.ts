@@ -3,7 +3,7 @@ import { TeamService } from '../services';
 
 export default class TeamController {
   public static findAll = async (
-    req: Request,
+    _req: Request,
     res: Response,
     next: NextFunction,
   ):Promise<Response | void> => {
