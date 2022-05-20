@@ -4,7 +4,7 @@ import * as sinon from 'sinon';
 import { Response } from 'superagent';
 import { app } from '../app';
 import Team from '../database/models/team';
-const chaiHttp = require('chai-http');
+import chaiHttp = require('chai-http');
 
 chai.use(chaiHttp);
 
