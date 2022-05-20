@@ -7,6 +7,7 @@ export default class MatchController {
       const matches = await MatchService.findAll();
       return res.status(200).json(matches);
     } catch (error) {
+      console.log(error);
       next(error);
     }
   };

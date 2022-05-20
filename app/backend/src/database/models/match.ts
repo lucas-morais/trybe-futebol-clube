@@ -21,11 +21,16 @@ Match.init({
     primaryKey: true,
     autoIncrement: true,
   },
+  homeTeam: DataTypes.NUMBER,
+  homeTeamGoals: DataTypes.NUMBER,
+  awayTeam: DataTypes.NUMBER,
+  awayTeamGoals: DataTypes.NUMBER,
+  inProgress: DataTypes.BOOLEAN,
 }, {
   // ... Outras configs
   underscored: true,
   sequelize: db,
-  modelName: 'team',
+  modelName: 'matches',
   timestamps: false,
 });
 
