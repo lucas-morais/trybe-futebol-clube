@@ -22,7 +22,7 @@ describe('Consulta o endpoint "/login"', () => {
 
       chaiHttpResponse = await chai.request(app).post('/login').send({
         email: users[0].email,
-        password: users[0].password,
+        password: 'secret_admin',
       });
     });
     after(() => {
