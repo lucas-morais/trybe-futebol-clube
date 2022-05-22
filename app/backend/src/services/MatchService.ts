@@ -1,3 +1,4 @@
+import { ICreateMatch } from '../interfaces';
 import Match from '../database/models/match';
 import { MatchModel } from '../models';
 
@@ -10,5 +11,10 @@ export default class MatchService {
   public static async findAllByStatus(status: boolean): Promise<Match[]> {
     const matches = MatchModel.findAllByStatus(status);
     return matches;
+  }
+
+  public static async create(data: ICreateMatch) {
+    const match = await MatchModel.create(data);
+    return match;
   }
 }

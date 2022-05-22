@@ -1,3 +1,4 @@
+import { ICreateMatch } from '../interfaces';
 import Team from '../database/models/team';
 import Match from '../database/models/match';
 
@@ -23,5 +24,10 @@ export default class MatchModel {
       },
     });
     return matches;
+  }
+
+  public static async create(data: ICreateMatch): Promise<Match> {
+    const match = await Match.create(data);
+    return match;
   }
 }

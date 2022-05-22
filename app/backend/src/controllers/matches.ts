@@ -21,4 +21,21 @@ export default class MatchController {
       next(error);
     }
   };
+
+  public static create = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> => {
+    try {
+      const {
+        homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress } = req.body;
+      const match = await MatchService
+        .create({ homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress });
+
+      return res.status(201).json(match);
+    } catch (error) {
+      next(error);
+    }
+  };
 }
