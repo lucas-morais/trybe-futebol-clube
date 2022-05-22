@@ -11,6 +11,7 @@ chai.use(chaiHttp);
 const { expect } = chai;
 
 const matchesMock = require('./mocks/matches.json');
+const { token } = require('./mocks/token.json');
 
 const finishedMock = matchesMock.slice(0, 2);
 const inProgressMock = matchesMock.slice(2, 4);
@@ -152,7 +153,7 @@ describe('Cria uma nova partida, fazendo uma requisção POST no endpoint "match
     });
     it('retorna a mensagem "Token not found"', () => {
       const { message } = chaiHttpResponse.body;
-      expect(message).to.be.equals('Token not found')
+      expect(message).to.be.equals('Token not found');
     });
   });
   describe('Se o token for inválido', () => {
@@ -161,7 +162,7 @@ describe('Cria uma nova partida, fazendo uma requisção POST no endpoint "match
       chaiHttpResponse = await chai
         .request(app)
         .post('/matches')
-        .set({authorization: 'false token'});
+        .set({ authorization: 'false token' });
     });
     it('reotrna uma resposta com o status "401 - Unauthorized"', () => {
       expect(chaiHttpResponse).to.have.status(401);
@@ -170,38 +171,128 @@ describe('Cria uma nova partida, fazendo uma requisção POST no endpoint "match
       const { message } = chaiHttpResponse.body;
       expect(message).to.be.equals('Invalid token');
     });
-  })
-  describe('Se os campos da requisição não são preenchido corretamente', () => {
-    it('retorna uma resposta com status "400 - Bad Request', () => {});
-    it('retorna a mensagem "All fields must be filled correctly"', () => {});
   });
   describe('Se os times forem repetidos na requisção', () => {
-    it('retorna uma resposta com o status "409 - Bad Request"', () => {});
-    it('retorna a mensagem "It is not possible to create a match with two equal teams"', () => {});
+    let chaiHttpResponse: Response;
+    before(async () => {
+      chaiHttpResponse = await chai
+        .request(app)
+        .post('/matches')
+        .set({ authorization: token })
+        .send({
+          homeTeam: 3,
+          awayTeam: 3,
+          homeTeamGoals: 2,
+          awayTeamGoals: 3,
+          inProgress: true,
+        });
+    });
+    it('retorna uma resposta com o status "409 - Conflict"', () => {
+      expect(chaiHttpResponse).to.have.status(409);
+    });
+    it('retorna a mensagem "It is not possible to create a match with two equal teams"', () => {
+      const { message } = chaiHttpResponse.body;
+      expect(message).to.be.equals(
+        'It is not possible to create a match with two equal teams'
+      );
+    });
   });
   describe('Se um dos times não existe', () => {
-    it('retorna uma resposta com o status "404 - Not Found"', () => {});
-    it('retorna a mensagem "There is no team with such id!"', () => {});
+    let chaiHttpResponse: Response;
+    before(async () => {
+      chaiHttpResponse = await chai
+        .request(app)
+        .post('/matches')
+        .set({ authorization: token })
+        .send({
+          homeTeam: 3,
+          awayTeam: 55,
+          homeTeamGoals: 2,
+          awayTeamGoals: 3,
+          inProgress: true,
+        });
+    });
+    it('retorna uma resposta com o status "404 - Not Found"', () => {
+      expect(chaiHttpResponse).to.have.status(404);
+    });
+    it('retorna a mensagem "There is no team with such id!"', () => {
+      const { message } = chaiHttpResponse.body;
+      expect(message).to.be.equals('There is no team with such id!');
+    });
   });
   describe('Se a requisição tenta criar uma partida finalizada', () => {
-    it('retorna uma resposta com status "409 - Bad Request"', () => {});
-    it('retorna a mensagem "Match must be in progress"', () => {});
+    let chaiHttpResponse: Response;
+    before(async () => {
+      chaiHttpResponse = await chai
+        .request(app)
+        .post('/matches')
+        .set({ authorization: token })
+        .send({
+          homeTeam: 3,
+          awayTeam: 8,
+          homeTeamGoals: 4,
+          awayTeamGoals: 3,
+          inProgress: false,
+        });
+    });
+    it('retorna uma resposta com status "409 - Bad Request"', () => {
+      expect(chaiHttpResponse).to.have.status(409);
+    });
+    it('retorna a mensagem "Match must be in progress"', () => {
+      const { message } = chaiHttpResponse.body;
+      expect(message).to.be.equals('Match must be in progress');
+    });
   });
   describe('Se a partida é criada com sucesso', () => {
-    it('retorna uma resposta com status "201 - Created"', () => {});
-    it('retorna um objeto com propriedades de uma partida', () => {});
-    it('o status da partida deve ser "inProgres: true"', () => {});
+    let chaiHttpResponse: Response;
+    before(async () => {
+      chaiHttpResponse = await chai
+        .request(app)
+        .post('/matches')
+        .set({ authorization: token })
+        .send({
+          homeTeam: 3,
+          awayTeam: 8,
+          homeTeamGoals: 4,
+          awayTeamGoals: 3,
+          inProgress: true,
+        });
+      sinon.stub(Match, 'create').resolves({
+        id: 50,
+        homeTeam: 3,
+        awayTeam: 8,
+        homeTeamGoals: 4,
+        awayTeamGoals: 2,
+        inProgress: true,
+      } as Match);
+    });
+    after(() => {
+      (Match.create as sinon.SinonStub).restore();
+    });
+    it('retorna uma resposta com status "201 - Created"', () => {
+      expect(chaiHttpResponse).to.have.status(201);
+    });
+    it('retorna um objeto com propriedades de uma partida', () => {
+      expect(chaiHttpResponse.body).to.have.property('id');
+      expect(chaiHttpResponse.body).to.have.property('homeTeam');
+      expect(chaiHttpResponse.body).to.have.property('homeTeamGoals');
+      expect(chaiHttpResponse.body).to.have.property('awayTeam');
+      expect(chaiHttpResponse.body).to.have.property('awayTeamGoals');
+      expect(chaiHttpResponse.body).to.have.property('inProgress');
+    });
+    it('o status da partida deve ser "inProgres: true"', () => {
+      const {inProgress} = chaiHttpResponse.body;
+      expect(inProgress).to.be.true;
+    });
   });
 });
 
 describe('Faz uma requisção para o endpoint "/matches/:id/finish", finalizando uma partida', () => {
   describe('Se a partida não existe', () => {
     it('retorna uma reposta com status "404 - Not Found"', () => {});
-    it('retorna a mensagem "Match not found"', () => {
-
-    });
+    it('retorna a mensagem "Match not found"', () => {});
   });
-  describe('Se a parida já foi finalizada', () => {
+  describe('Se a partida já foi finalizada', () => {
     it('retorna uma resposta com status "409 - Conflict"', () => {});
     it('retorna a mensagem "Match is already finished"', () => {});
   });

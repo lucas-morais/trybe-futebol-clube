@@ -3,13 +3,13 @@ import { Conflict, NotFound } from '../errors';
 import { TeamModel } from '../models';
 
 export default class MatchMiddleware {
-  private static validate = async (req:Request, res: Response, next: NextFunction) => {
+  public static validate = async (req:Request, res: Response, next: NextFunction) => {
     try {
       const { homeTeam, awayTeam, inProgress } = req.body;
       this.finalizedMatchValidation(inProgress);
       this.sameTeamValidations(homeTeam, awayTeam);
-      this.teamExistsValidation(homeTeam);
-      this.teamExistsValidation(awayTeam);
+      await this.teamExistsValidation(homeTeam);
+      await this.teamExistsValidation(awayTeam);
       return next();
     } catch (error) {
       next(error);

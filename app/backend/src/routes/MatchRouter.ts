@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import TokenJWT from '../providers/TokenJWT';
 import { MatchController } from '../controllers';
-import { AuthMiddleware } from '../middlewares';
+import { AuthMiddleware, MatchMiddleware } from '../middlewares';
 
 const router = Router();
 const tokenJwt = new TokenJWT();
@@ -11,5 +11,5 @@ const authMiddleware = new AuthMiddleware(tokenJwt);
 
 router.route('/')
   .get(MatchController.findAll)
-  .post(authMiddleware.execute);
+  .post(authMiddleware.execute, MatchMiddleware.validate, MatchController.create);
 export default router;
