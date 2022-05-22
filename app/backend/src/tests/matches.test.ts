@@ -220,29 +220,6 @@ describe('Cria uma nova partida, fazendo uma requisção POST no endpoint "match
       expect(message).to.be.equals('There is no team with such id!');
     });
   });
-  describe('Se a requisição tenta criar uma partida finalizada', () => {
-    let chaiHttpResponse: Response;
-    before(async () => {
-      chaiHttpResponse = await chai
-        .request(app)
-        .post('/matches')
-        .set({ authorization: token })
-        .send({
-          homeTeam: 3,
-          awayTeam: 8,
-          homeTeamGoals: 4,
-          awayTeamGoals: 3,
-          inProgress: false,
-        });
-    });
-    it('retorna uma resposta com status "409 - Bad Request"', () => {
-      expect(chaiHttpResponse).to.have.status(409);
-    });
-    it('retorna a mensagem "Match must be in progress"', () => {
-      const { message } = chaiHttpResponse.body;
-      expect(message).to.be.equals('Match must be in progress');
-    });
-  });
   describe('Se a partida é criada com sucesso', () => {
     let chaiHttpResponse: Response;
     before(async () => {
