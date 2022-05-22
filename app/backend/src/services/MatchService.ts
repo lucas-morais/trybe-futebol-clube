@@ -17,4 +17,8 @@ export default class MatchService {
     const match = await MatchModel.create(data);
     return match;
   }
+
+  public static async update(data: Match, id: number): Promise<void> {
+    await MatchModel.update(id, data);
+  }
 }

@@ -30,4 +30,8 @@ export default class MatchModel {
     const match = await Match.create(data);
     return match;
   }
+
+  public static async update(id: number, data: Match): Promise<void> {
+    await Match.update({ ...data }, { where: { id } });
+  }
 }

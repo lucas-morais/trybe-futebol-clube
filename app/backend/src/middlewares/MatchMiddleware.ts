@@ -6,10 +6,10 @@ export default class MatchMiddleware {
   public static validate = async (req:Request, res: Response, next: NextFunction) => {
     try {
       const { homeTeam, awayTeam, inProgress } = req.body;
-      this.finalizedMatchValidation(inProgress);
-      this.sameTeamValidations(homeTeam, awayTeam);
       await this.teamExistsValidation(homeTeam);
       await this.teamExistsValidation(awayTeam);
+      this.sameTeamValidations(homeTeam, awayTeam);
+      this.finalizedMatchValidation(inProgress);
       return next();
     } catch (error) {
       next(error);

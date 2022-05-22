@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import Match from '../database/models/match';
 import { MatchService } from '../services';
 
 export default class MatchController {
@@ -34,6 +35,21 @@ export default class MatchController {
         .create({ homeTeam, awayTeam, homeTeamGoals, awayTeamGoals, inProgress });
 
       return res.status(201).json(match);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public static finishMatch = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> => {
+    try {
+      const { id } = req.params;
+      const data = { inProgress: false } as Match;
+      await MatchService.update(data, Number(id));
+      return res.status(200).json({ message: 'Finished' });
     } catch (error) {
       next(error);
     }

@@ -281,23 +281,44 @@ describe('Cria uma nova partida, fazendo uma requisção POST no endpoint "match
       expect(chaiHttpResponse.body).to.have.property('inProgress');
     });
     it('o status da partida deve ser "inProgres: true"', () => {
-      const {inProgress} = chaiHttpResponse.body;
+      const { inProgress } = chaiHttpResponse.body;
       expect(inProgress).to.be.true;
     });
   });
 });
 
 describe('Faz uma requisção para o endpoint "/matches/:id/finish", finalizando uma partida', () => {
-  describe('Se a partida não existe', () => {
-    it('retorna uma reposta com status "404 - Not Found"', () => {});
-    it('retorna a mensagem "Match not found"', () => {});
-  });
-  describe('Se a partida já foi finalizada', () => {
-    it('retorna uma resposta com status "409 - Conflict"', () => {});
-    it('retorna a mensagem "Match is already finished"', () => {});
-  });
   describe('Se a partida é encerrada com sucesso', () => {
-    it('retorna uma resposta com status "200 - Ok"', () => {});
-    it('retorna a mensagem "Finished"', () => {});
+    let chaiHttpResponse: Response;
+    before(async () => {
+      chaiHttpResponse = await chai
+        .request(app)
+        .patch('/matches/45/finish')
+        .set({ authorization: token });
+
+      sinon.stub(Match, 'update').resolves([
+        1,
+        [
+          {
+            id: 50,
+            homeTeam: 3,
+            awayTeam: 8,
+            homeTeamGoals: 4,
+            awayTeamGoals: 2,
+            inProgress: true,
+          },
+        ] as Match[],
+      ]);
+      after(() => {
+        (Match.update as sinon.SinonStub).restore();
+      })
+    });
+    it('retorna uma resposta com status "200 - Ok"', () => {
+      expect(chaiHttpResponse).to.have.status(200);
+    });
+    it('retorna a mensagem "Finished"', () => {
+      const { message } = chaiHttpResponse.body;
+      expect(message).to.be.equals('Finished');
+    });
   });
 });
