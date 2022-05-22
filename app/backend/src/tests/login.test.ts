@@ -147,9 +147,9 @@ describe('Acessa o endpoint de validação de login: "/login/validate"', () => {
       expect(chaiHttpResponse.body).to.be.an('object');
       expect(chaiHttpResponse.body).to.have.property('message');
     });
-    it('o objeto retornado deve conter a mensagem: "Invalid token"', () => {
+    it('o objeto retornado deve conter a mensagem: "Token not found"', () => {
       const { message } = chaiHttpResponse.body;
-      expect(message).to.be.equals('Invalid token');
+      expect(message).to.be.equals('Token not found');
     });
     it('deve responder com status "unauthorized - 401"', () => {
       expect(chaiHttpResponse).to.have.status(401);

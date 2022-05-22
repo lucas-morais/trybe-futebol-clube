@@ -18,6 +18,6 @@ export default class AuthMiddleware {
         throw new UnauthorizedError('Invalid token');
       }
     }
-    throw new UnauthorizedError('Invalid token');
+    throw new UnauthorizedError('Token not found');
   };
 }
