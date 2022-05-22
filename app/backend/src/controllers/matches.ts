@@ -54,4 +54,24 @@ export default class MatchController {
       next(error);
     }
   };
+
+  public static update = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> => {
+    try {
+      const { id } = req.params;
+      const { homeTeamGoals, awayTeamGoals, inProgress } = req.body;
+      const data = {
+        ...(homeTeamGoals !== undefined && { homeTeamGoals }),
+        ...(awayTeamGoals !== undefined && { awayTeamGoals }),
+        ...(inProgress !== undefined && { inProgress }),
+      } as Match;
+      await MatchService.update(data, Number(id));
+      return res.status(200).json({ message: 'Match updated' });
+    } catch (error) {
+      next(error);
+    }
+  };
 }

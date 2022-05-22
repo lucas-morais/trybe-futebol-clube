@@ -13,6 +13,9 @@ router.route('/')
   .get(MatchController.findAll)
   .post(authMiddleware.execute, MatchMiddleware.validate, MatchController.create);
 
+router.route('/:id')
+  .patch(authMiddleware.execute, MatchController.update);
+
 router.route('/:id/finish')
   .patch(authMiddleware.execute, MatchController.finishMatch);
 export default router;

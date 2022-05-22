@@ -187,8 +187,8 @@ describe('Cria uma nova partida, fazendo uma requisção POST no endpoint "match
           inProgress: true,
         });
     });
-    it('retorna uma resposta com o status "409 - Conflict"', () => {
-      expect(chaiHttpResponse).to.have.status(409);
+    it('retorna uma resposta com o status "401 - Unauthorized"', () => {
+      expect(chaiHttpResponse).to.have.status(401);
     });
     it('retorna a mensagem "It is not possible to create a match with two equal teams"', () => {
       const { message } = chaiHttpResponse.body;
@@ -286,9 +286,9 @@ describe('Faz uma requisção para o endpoint "/matches/:id/finish", finalizando
           },
         ] as Match[],
       ]);
-      after(() => {
-        (Match.update as sinon.SinonStub).restore();
-      })
+    });
+    after(() => {
+      (Match.update as sinon.SinonStub).restore();
     });
     it('retorna uma resposta com status "200 - Ok"', () => {
       expect(chaiHttpResponse).to.have.status(200);
@@ -296,6 +296,74 @@ describe('Faz uma requisção para o endpoint "/matches/:id/finish", finalizando
     it('retorna a mensagem "Finished"', () => {
       const { message } = chaiHttpResponse.body;
       expect(message).to.be.equals('Finished');
+    });
+  });
+});
+
+describe('Faz uma requisção para o endpoint "/matches/:id", atualizando uma partida', () => {
+  describe('Se o placar da partida é modificado', () => {
+    let chaiHttpResponse: Response;
+    before(async () => {
+      chaiHttpResponse = await chai
+        .request(app)
+        .patch('/matches/45/finish')
+        .set({ authorization: token })
+        .send({
+          homeTeamGoals: 2,
+          awayTeamGoals: 1,
+        });
+
+      sinon.stub(Match, 'update').resolves([
+        1,
+        [
+          {
+            id: 1,
+            homeTeam: 3,
+            awayTeam: 1,
+            homeTeamGoals: 2,
+            awayTeamGoals: 1,
+            inProgress: true,
+          },
+        ] as Match[],
+      ]);
+    });
+    after(() => {
+      (Match.update as sinon.SinonStub).restore();
+    });
+    it('retorna uma resposta com status "200 - Ok"', () => {
+      expect(chaiHttpResponse).to.have.status(200);
+    });
+  });
+  describe('Se o status da partida é modificado', () => {
+    let chaiHttpResponse: Response;
+    before(async () => {
+      chaiHttpResponse = await chai
+        .request(app)
+        .patch('/matches/45/finish')
+        .set({ authorization: token })
+        .send({
+          inProgress: false,
+        });
+
+      sinon.stub(Match, 'update').resolves([
+        1,
+        [
+          {
+            id: 1,
+            homeTeam: 1,
+            awayTeam: 1,
+            homeTeamGoals: 2,
+            awayTeamGoals: 1,
+            inProgress: false,
+          },
+        ] as Match[],
+      ]);
+    });
+    after(() => {
+      (Match.update as sinon.SinonStub).restore();
+    });
+    it('retorna uma resposta com status "200 - Ok"', () => {
+      expect(chaiHttpResponse).to.have.status(200);
     });
   });
 });
