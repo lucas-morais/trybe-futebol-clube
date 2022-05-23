@@ -2,15 +2,13 @@ import { NextFunction, Request, Response } from 'express';
 import { LeaderboardService } from '../services';
 
 export default class LeaderboardController {
-  constructor(private service: LeaderboardService) {}
-
-  public leaderboard = async (
+  public static leaderboard = async (
     _req: Request,
     res: Response,
     next:NextFunction,
   ): Promise<Response | void> => {
     try {
-      const classification = await this.service.leaderbord();
+      const classification = await LeaderboardService.leaderbord();
       return res.status(200).json(classification);
     } catch (error) {
       console.log(error);
@@ -18,13 +16,13 @@ export default class LeaderboardController {
     }
   };
 
-  public leaderboardHome = async (
+  public static leaderboardHome = async (
     _req: Request,
     res: Response,
     next:NextFunction,
   ): Promise<Response | void> => {
     try {
-      const classification = await this.service.leaderbordHome();
+      const classification = await LeaderboardService.leaderbordHome();
       return res.status(200).json(classification);
     } catch (error) {
       console.log(error);
@@ -32,13 +30,13 @@ export default class LeaderboardController {
     }
   };
 
-  public leaderboardAway = async (
+  public static leaderboardAway = async (
     _req: Request,
     res: Response,
     next:NextFunction,
   ): Promise<Response | void> => {
     try {
-      const classification = await this.service.leaderbordAway();
+      const classification = await LeaderboardService.leaderbordAway();
       return res.status(200).json(classification);
     } catch (error) {
       console.log(error);

@@ -1,17 +1,17 @@
 import { Router } from 'express';
-import { LeaderboardService } from '../services';
+// import { LeaderboardService } from '../services';
 import { LeaderboardController } from '../controllers';
 
 const router = Router();
 
-const leaderboardService = new LeaderboardService();
-const leaderboardController = new LeaderboardController(leaderboardService);
+// const leaderboardService = new LeaderboardService();
+// const leaderboardController = new LeaderboardController(leaderboardService);
 
 router.route('/')
-  .get(leaderboardController.leaderboard);
+  .get(LeaderboardController.leaderboard);
 router.route('/home')
-  .get(leaderboardController.leaderboardHome);
+  .get(LeaderboardController.leaderboardHome);
 router.route('/away')
-  .get(leaderboardController.leaderboardAway);
+  .get(LeaderboardController.leaderboardAway);
 
 export default router;

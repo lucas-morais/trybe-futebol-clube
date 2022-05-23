@@ -2,7 +2,15 @@ import { IMatchHandler, IMatchResponse, ITeamInfo } from '../interfaces';
 import TeamResults from './TeamResults';
 
 export default class Classification {
-  public results = new Map<string, TeamResults>();
+  public results: Map<string, TeamResults>;
+
+  constructor() {
+    this.init();
+  }
+
+  private init() {
+    this.results = new Map<string, TeamResults>();
+  }
 
   private static matchHandler(match: IMatchResponse): IMatchHandler {
     return {
