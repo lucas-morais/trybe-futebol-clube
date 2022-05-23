@@ -3,7 +3,7 @@ import Match from '../database/models/match';
 import { MatchModel } from '../models';
 
 export default class MatchService {
-  public static async findAll(): Promise<Match[]> {
+  public static async findAll() {
     const matches = MatchModel.findAll();
     return matches;
   }
