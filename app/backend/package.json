@@ -14,8 +14,7 @@
     "predev": "npm run build && npm run db:reset",
     "dev": "ts-node ./src/server.ts",
     "postinstall": "if [ ! -z 'cat ./packages.npm' ]; then npm i --ignore-scripts $(cat ./packages.npm); fi",
-    "lint": "eslint ./src --ext .ts",
-    "dev:run": "nodemon ./src/server.ts"
+    "lint": "eslint ./src --ext .ts"
   },
   "keywords": [],
   "author": "",
@@ -44,7 +43,6 @@
     "eslint-plugin-mocha": "9.0.0",
     "eslint-plugin-sonarjs": "0.10.0",
     "mocha": "9.2.1",
-    "nodemon": "^2.0.16",
     "nyc": "15.1.0",
     "sequelize-cli": "6.3.0",
     "sinon": "13.0.1",
