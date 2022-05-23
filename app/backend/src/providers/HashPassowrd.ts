@@ -1,4 +1,4 @@
-import { compare, hash } from 'bcrypt';
+import { compare, hash } from 'bcryptjs';
 
 export default class HashPassowrd {
   public static createHash(password: string): Promise<string> {
